@@ -2,7 +2,7 @@ import { API_URL } from './const'
 
 
 const getMovieBySearch = async (search) => {
-  console.log('started fetch')
+  console.log('starting fetch')
 
   const options = {
     method: 'GET'
@@ -12,10 +12,11 @@ const getMovieBySearch = async (search) => {
     const response = await fetch(API_URL + `&s=${search}`, options)
     if (response.ok) {
       const data = await response.json()
-      console.log(data.Search)
+      if (data.Response === 'False') {
+        console.log('Response failed: "Movie not found!"')
+        return []
+      }
       return data.Search
-    } else {
-      console.log('Response failed')
     }
   } catch (e) {
     console.log(e)

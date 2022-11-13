@@ -1,6 +1,6 @@
 import './App.css'
 import { useState, useEffect, useCallback } from 'react'
-import getMovieBySearch from './getService'
+import getMovieBySearch from './getService/getMovieBySearch'
 import Search from './components/Search'
 import MoviesContainer from './components/MoviesContainer'
 
@@ -9,31 +9,27 @@ function App() {
   const [movies, setMovies] = useState(null)
   const [query, setQuery] = useState('Spiderman')
 
-  useEffect(() => {
-    const getData = async () =>
-      setMovies(await getMovieBySearch(query))
+  const getMovies = async () =>
+    setMovies(await getMovieBySearch(query))
 
-    getData()
+  const getMoviesCached = useCallback(getMovies, [query])
+
+  useEffect(() => {
+    getMoviesCached()
   }, [])
 
-  const handleSearchClick = useCallback(async () => {
-    const newMovies = await getMovieBySearch(query)
-    setMovies(newMovies)
-  }, [query])
-
-  const handleKeyPress = useCallback(async e => {
+  const handleKeyPress = e => {
     if (e.key !== 'Enter') return
 
-    const newMovies = await getMovieBySearch(query)
-    setMovies(newMovies)
-  }, [query])
+    getMoviesCached(e)
+  }
 
   return (
     <div className="app">
       <h1>Movieland</h1>
       <Search query={query}
         setQuery={setQuery}
-        handleSearchClick={() => handleSearchClick()}
+        handleSearchClick={getMoviesCached}
         handleKeyPress={e => handleKeyPress(e)}
       />
       {
