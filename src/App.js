@@ -16,6 +16,7 @@ function App() {
 
   useEffect(() => {
     getMoviesCached()
+    // eslint-disable-next-line
   }, [])
 
   const handleKeyPress = e => {

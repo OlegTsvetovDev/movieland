@@ -1,5 +1,5 @@
-const KEY = 'aa645136'
-const URL = 'https://www.omdbapi.com'
+const KEY = process.env.REACT_APP_KEY
+const URL = process.env.REACT_APP_URL
+
 
 export const API_URL = URL + '?apikey=' + KEY
-// https://www.omdbapi.com/?apikey=aa645136
